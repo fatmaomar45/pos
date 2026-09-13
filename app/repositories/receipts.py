@@ -7,18 +7,16 @@ def get_all(db: Session):
     return db.scalars(select(Receipt)).all()
 
 def get_by_id(db: Session, receipt_id: int):
-    return db.scalars(select(Receipt).where(Receipt.id == receipt_id)).first()
+    return db.scalars(select(Receipt).where(Receipt.receipt_id == receipt_id)).first()
 
 def get_by_receipt_number(db: Session, receipt_number: str):
     return db.scalars(select(Receipt).where(Receipt.receipt_number == receipt_number)).first()
 
-def create(db: Session, receipt_number: str, total_amount: float, tax_amount: float, payment_method: str):
+def create(db: Session, data: dict):
     receipt = Receipt(
-        receipt_number=receipt_number,
-        total_amount=total_amount,
-        tax_amount=tax_amount,
-        payment_method=payment_method,
-        created_at=datetime.utcnow()
+        sale_id=data.get("sale_id"),
+        receipt_number=data.get("receipt_number"),
+        issue_date=datetime.utcnow()
     )
     db.add(receipt)
     db.commit()

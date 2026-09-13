@@ -5,8 +5,8 @@ from pydantic import BaseModel, ConfigDict
 
 
 class CategoryBase(BaseModel):
-    name: str
-    description: str
+    category_name: str
+    description: Optional[str] = None
 
 
 class CategoryCreate(CategoryBase):
@@ -14,12 +14,11 @@ class CategoryCreate(CategoryBase):
 
 
 class CategoryUpdate(BaseModel):
-    name: Optional[str] = None
+    category_name: Optional[str] = None
     description: Optional[str] = None
 
 
 class CategoryRead(CategoryBase):
     model_config = ConfigDict(from_attributes=True)
 
-    id: int
-    issued_at: datetime
+    category_id: int

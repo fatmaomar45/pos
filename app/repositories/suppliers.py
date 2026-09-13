@@ -7,16 +7,24 @@ def get_all(db: Session):
     return db.query(Supplier).all()
 
 
-def get_by_id(db: Session, user_id: int):
-    return db.query(Supplier).filter(Supplier.id == user_id).first()
+def get_by_id(db: Session, supplier_id: int):
+    return db.query(Supplier).filter(Supplier.supplier_id == supplier_id).first()
 
 
 def get_by_username(db: Session, username: str):
-    return db.query(Supplier).filter(Supplier.username == username).first()
+    return db.query(Supplier).filter(Supplier.supplier_name == username).first()
 
 
-def create(db: Session, username: str, hashed_password: str, role: str, email: str):
-    supplier = Supplier(username=username, hashed_password=hashed_password, role=role, email=email)
+def create(db: Session, data: dict):
+    supplier = Supplier(
+        supplier_name=data.get("name"),
+        contact_person=data.get("name"),
+        phone_number=data.get("phone"),
+        email=data.get("email"),
+        address=data.get("address", ""),
+        password=data.get("password", ""),
+        role=data.get("role", "user"),
+    )
     db.add(supplier)
     db.commit()
     db.refresh(supplier)
@@ -31,6 +39,6 @@ def update(db: Session, supplier: Supplier, fields: dict):
     return supplier
 
 
-def delete(db: Session, user: Supplier):
-    db.delete(Supplier)
+def delete(db: Session, supplier: Supplier):
+    db.delete(supplier)
     db.commit()

@@ -1,47 +1,38 @@
 from datetime import datetime
-from decimal import Decimal
+from typing import Optional
 
-from schemas.product import UserBase
-from database import Base
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict
 
 
 class UserBase(BaseModel):
-   name:str
-   email:str
-   password:str
-   is_active:bool = True
+    username: str
+    password: str
+    role: str
+    phone_number: Optional[str] = None
+    is_active: bool = True
 
 
-class UserCreate(BaseModel):
-      pass
-
+class UserCreate(UserBase):
+    password:str
 
 
 class UserUpdate(BaseModel):
-      name:str | None = None
-      email:str | None = None
-      password:str | None = None
-      is_active:bool | None = True
-      is_active:bool | None = True
+    username: Optional[str] = None
+    password: Optional[str] = None
+    role: Optional[str] = None
+    phone_number: Optional[str] = None
+    is_active: Optional[bool] = None
 
 
-class UserResponse(UserBase):
-   model_config=ConfigDict(from_attributes=True)
-
-   id:int
-   created_at:datetime
-   updated_at:datetime
-   
-   
-class UserDelete(BaseModel):
-      id:int
-      model_config=ConfigDict(from_attributes=True)
-      
-      
 class UserRead(UserBase):
-        id:int
-        created_at:datetime
-        updated_at:datetime
-        model_config=ConfigDict(from_attributes=True)
-          
+    model_config = ConfigDict(from_attributes=True)
+
+    user_id: int
+    created_at: datetime
+    updated_at: datetime
+    is_active:bool
+
+
+class UserDelete(BaseModel):
+    user_id: int
+    model_config = ConfigDict(from_attributes=True)

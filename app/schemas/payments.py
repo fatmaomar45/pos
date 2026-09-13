@@ -8,7 +8,7 @@ from pydantic import BaseModel, ConfigDict
 class PaymentBase(BaseModel):
     sale_id: int
     payment_method: str
-    amount_paid: Decimal
+    amount: Decimal
 
 
 class PaymentCreate(PaymentBase):
@@ -16,12 +16,18 @@ class PaymentCreate(PaymentBase):
 
 
 class PaymentUpdate(BaseModel):
+    sale_id: Optional[int] = None
     payment_method: Optional[str] = None
-    amount_paid: Optional[Decimal] = None
+    amount: Optional[Decimal] = None
 
 
 class PaymentRead(PaymentBase):
     model_config = ConfigDict(from_attributes=True)
 
-    id: int
+    payment_id: int
     payment_date: datetime
+
+
+class PaymentDelete(BaseModel):
+    payment_id: int
+    model_config = ConfigDict(from_attributes=True)

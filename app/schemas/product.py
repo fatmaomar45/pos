@@ -1,43 +1,39 @@
 from datetime import datetime
 from decimal import Decimal
+from typing import Optional
 
-from schemas.product import BaseModel
-from pydantic import BaseModel, ConfigDict, Field
-from database import Base
+from pydantic import BaseModel, ConfigDict
+
 
 class ProductBase(BaseModel):
-   name:str
-   sku:str
-   price:Decimal
-   category:str
-   suplier_id:int
-   is_active:bool = True
+    product_name: str
+    sku: str
+    cost: int
+    category_id: Optional[int] = None
+    supplier_id: Optional[int] = None
+    is_active: bool = True
 
 
-   class productCreate(BaseModel):
-      pass
+class ProductCreate(ProductBase):
+    pass
 
 
-
-   class productUpdate(BaseModel):
-      name:str | None = None
-      sku:str | None = None
-      price:Decimal | None = None
-      category:str | None = None
-      suplier_id:int | None = None
-      is_active:bool | None = True
+class ProductUpdate(BaseModel):
+    product_name: Optional[str] = None
+    sku: Optional[str] = None
+    cost: Optional[int] = None
+    category_id: Optional[int] = None
+    supplier_id: Optional[int] = None
+    is_active: Optional[bool] = None
 
 
 class ProductRead(ProductBase):
-   model_config=ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)
 
-   id:int
-   created_at:datetime
-   updated_at:datetime
-   
-class ProductDelete(ProductBase):
-    model_config=ConfigDict(from_attributes=True)
-    
-    id:int
-    created_at:datetime
-    updated_at:datetime   
+    product_id: int
+    created_at: datetime
+
+
+class ProductDelete(BaseModel):
+    product_id: int
+    model_config = ConfigDict(from_attributes=True)

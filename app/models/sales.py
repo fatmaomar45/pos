@@ -13,5 +13,6 @@ class Sale(Base):
 
     customer = relationship("Customer", back_populates="sales")
     items = relationship("SaleItem", back_populates="sale")
+    receipts = relationship("Receipt", back_populates="sale")
     # reciprocal relationship for payments
     payments = relationship("Payment", back_populates="sale")

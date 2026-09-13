@@ -4,15 +4,20 @@ from app.models.salesitems import SaleItem
 def get_all(db: Session):
     return db.query(SaleItem).all()
 
-def get_by_id(db: Session, item_id: int):
-    return db.query(SaleItem).filter(SaleItem.id == item_id).first()
+def get_by_id(db: Session, sale_item_id: int):
+    return db.query(SaleItem).filter(SaleItem.sale_item_id == sale_item_id).first()
 
 def get_by_name(db: Session, name: str):
-    return db.query(SaleItem).filter(SaleItem.name == name).first()
+    return db.query(SaleItem).filter(SaleItem.item_type == name).first()
 
-def create(db: Session, name: str, price: float, sku: str, stock: int):
-   
-    item = SaleItem(name=name, price=price, sku=sku, stock=stock)
+def create(db: Session, data: dict):
+    item = SaleItem(
+        sale_id=data.get("sale_id"),
+        product_id=data.get("product_id"),
+        quantity=data.get("quantity"),
+        item_type=data.get("item_type", "product"),
+        unit_price=data.get("unit_price", 0),
+    )
     db.add(item)
     db.commit()
     db.refresh(item)

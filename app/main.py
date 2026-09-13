@@ -7,7 +7,7 @@ from app.routers.categories import router as categories
 from app.routers.sales import router as sales
 from app.routers.salesitems import router as salesitems
 from app.routers.receipts import router as receipts
-from app.routers.product import router as products
+from app.routers.products import router as products
 from app.routers.payments import router as payments
 from app.routers.customers import router as customers
 
@@ -28,3 +28,7 @@ app.include_router(receipts)
 app.include_router(products)
 app.include_router(payments)
 app.include_router(customers)
+
+@app.get("/")
+def root():
+    return {"message": "Welcome to the point of sale API!"}

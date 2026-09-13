@@ -6,18 +6,16 @@ def get_all(db: Session):
     return db.scalars(select(Category)).all()
 
 def get_by_id(db: Session, category_id: int):
-    return db.scalars(select(Category).where(Category.id == category_id)).first()
+    return db.scalars(select(Category).where(Category.category_id == category_id)).first()
 
 def get_by_slug(db: Session, slug: str):
 
-    return db.scalars(select(Category).where(Category.slug == slug)).first()
+    return db.scalars(select(Category).where(Category.category_name == slug)).first()
 
-def create(db: Session, name: str, slug: str, description: str = None, parent_id: int = None):
+def create(db: Session, data: dict):
     category = Category(
-        name=name,
-        slug=slug,
-        description=description,
-        parent_id=parent_id  
+        name=data.get("name"),
+        description=data.get("description"),
     )
     db.add(category)
     db.commit()

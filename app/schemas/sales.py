@@ -1,46 +1,31 @@
 from datetime import datetime
 from decimal import Decimal
+from typing import Optional
 
-
-from database import Base
-from schemas.sales import SaleBase
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict
 
 
 class SaleBase(BaseModel):
-   name:str
-   sku:str
-   price:Decimal
-   category:str
-   suplier_id:int
-   is_active:bool = True
+    customer_id: int
+    total_amount: Decimal
 
 
-   class SaleCreate(BaseModel):
-      pass
+class SaleCreate(SaleBase):
+    pass
 
 
-
-   class SaleUpdate(BaseModel):
-      name:str | None = None
-      sku:str | None = None
-      price:Decimal | None = None
-      category:str | None = None
-      suplier_id:int | None = None
-      is_active:bool | None = True
+class SaleUpdate(BaseModel):
+    customer_id: Optional[int] = None
+    total_amount: Optional[Decimal] = None
 
 
-class SaleResponse(SaleBase):
-   model_config=ConfigDict(from_attributes=True)
+class SaleRead(SaleBase):
+    model_config = ConfigDict(from_attributes=True)
 
-   id:int
-   created_at:datetime
-   updated_at:datetime
-   
-class SaleDelete(SaleBase):
-    model_config=ConfigDict(from_attributes=True)
-    
-    id:int
-    created_at:datetime
-    updated_at:datetime
-       
+    sale_id: int
+    sale_date: datetime
+
+
+class SaleDelete(BaseModel):
+    sale_id: int
+    model_config = ConfigDict(from_attributes=True)

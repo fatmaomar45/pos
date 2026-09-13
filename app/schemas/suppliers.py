@@ -1,80 +1,39 @@
 from datetime import datetime
-from decimal import Decimal
+from typing import Optional
 
-
-from schemas.suppliers import SupplierBase
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict
 
 
 class SupplierBase(BaseModel):
-   name:str
-   email:str
-   phone:str
-   is_active:bool = True
+    supplier_name: str
+    contact_person: str
+    phone_number: str
+    email: str
+    address: str
+    password: str
+    role: str
 
 
-class SupplierCreate(BaseModel):
-      pass
-
+class SupplierCreate(SupplierBase):
+    pass
 
 
 class SupplierUpdate(BaseModel):
-      name:str | None = None
-      email:str | None = None
-      phone:str | None = None
-      is_active:bool | None = True
-      is_active:bool | None = True
-
-
-class SupplierResponse(SupplierBase):
-   model_config=ConfigDict(from_attributes=True)
-
-   id:int
-   created_at:datetime
-   updated_at:datetime
-
-
-class SupplierDelete(BaseModel):
-      id:int
-      model_config=ConfigDict(from_attributes=True)
+    supplier_name: Optional[str] = None
+    contact_person: Optional[str] = None
+    phone_number: Optional[str] = None
+    email: Optional[str] = None
+    address: Optional[str] = None
+    password: Optional[str] = None
+    role: Optional[str] = None
 
 
 class SupplierRead(SupplierBase):
-        id:int
-        created_at:datetime
-        updated_at:datetime
-        model_config=ConfigDict(from_attributes=True)
-          
-   
-class SupplierCreate(BaseModel):
-      pass
+    model_config = ConfigDict(from_attributes=True)
+
+    supplier_id: int
 
 
-
-class SupplierUpdate(BaseModel):
-      name:str | None = None
-      email:str | None = None
-      phone:str | None = None
-      is_active:bool | None = True
-      is_active:bool | None = True
-
-
-class ProductResponse(SupplierBase):
-   model_config=ConfigDict(from_attributes=True)
-
-   id:int
-   created_at:datetime
-   updated_at:datetime
-   
-   
-class UserDelete(BaseModel):
-      id:int
-      model_config=ConfigDict(from_attributes=True)
-      
-      
-class UserRead(SupplierBase):
-        id:int
-        created_at:datetime
-        updated_at:datetime
-        model_config=ConfigDict(from_attributes=True)
-          
+class SupplierDelete(BaseModel):
+    supplier_id: int
+    model_config = ConfigDict(from_attributes=True)

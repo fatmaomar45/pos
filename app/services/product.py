@@ -1,32 +1,29 @@
 from sqlalchemy.orm import Session
-import repositories.product_repository
+from app.repositories.products import get_by_id, get_all, create as repo_create, update as repo_update, delete as repo_delete
 from fastapi import HTTPException
-from schemas.product import ProductCreate, ProductUpdate
+from app.schemas.product import ProductCreate, ProductUpdate
 
 
-
-def get_product(db:Session, id:int):
-    product=repositories.product_repository.product_repository.get(db, id)
+def get_product(db: Session, id: int):
+    product = get_by_id(db, id)
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
     return product
 
 
-def list_products(db:Session):
-    return repositories.product_repository.product_repository.get_all(db)
-
-def create_product(db:Session, data: ProductCreate):
-    return repositories.product_repository.product_repository.create(db, data.model_dump())
+def list_products(db: Session):
+    return get_all(db)
 
 
-def update_product(db:Session, id:int, data: ProductUpdate):
-    product=get_product(db, id)
-    return repositories.product_repository.product_repository.update(db, product, data.model_dump(exclude_unset=True))
+def create_product(db: Session, data: ProductCreate):
+    return repo_create(db, data.model_dump())
 
 
-def delete_product(db:Session, product_id:int):
-    product=get_product(db, product_id)
-    # check permissions
-    # check policies
-    return repositories.product_repository.product_repository.delete(db, product)
+def update_product(db: Session, id: int, data: ProductUpdate):
+    product = get_product(db, id)
+    return repo_update(db, product, data.model_dump(exclude_unset=True))
 
+
+def delete_product(db: Session, product_id: int):
+    product = get_product(db, product_id)
+    return repo_delete(db, product)

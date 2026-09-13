@@ -1,6 +1,7 @@
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-from app.models.products import Product  # Assumed model path
+from app.models.product import Product
+from app.models.inventory import Inventory
 
 def get_all(db: Session):
     return db.scalars(select(Product)).all()

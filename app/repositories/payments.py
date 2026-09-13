@@ -7,20 +7,18 @@ def get_all(db: Session):
     return db.scalars(select(Payment)).all()
 
 def get_by_id(db: Session, payment_id: int):
-    return db.scalars(select(Payment).where(Payment.id == payment_id)).first()
+    return db.scalars(select(Payment).where(Payment.payment_id == payment_id)).first()
 
 def get_by_receipt_id(db: Session, receipt_id: int):
     
-    return db.scalars(select(Payment).where(Payment.receipt_id == receipt_id)).all()
+    return db.scalars(select(Payment).where(Payment.sale_id == receipt_id)).all()
 
-def create(db: Session, receipt_id: int, amount: float, payment_method: str, status: str = "completed", transaction_reference: str = None):
+def create(db: Session, data: dict):
     payment = Payment(
-        receipt_id=receipt_id,
-        amount=amount,
-        payment_method=payment_method,  
-        status=status,                 
-        transaction_reference=transaction_reference
-        
+        sale_id=data.get("sale_id"),
+        payment_method=data.get("payment_method"),
+        amount=data.get("amount", data.get("amount_paid", 0)),
+        payment_date=datetime.utcnow()
     )
     db.add(payment)
     db.commit()

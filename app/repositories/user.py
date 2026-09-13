@@ -8,15 +8,21 @@ def get_all(db: Session):
 
 
 def get_by_id(db: Session, user_id: int):
-    return db.query(User).filter(User.id == user_id).first()
+    return db.query(User).filter(User.user_id == user_id).first() #return none if the user does not exist.
 
 
 def get_by_username(db: Session, username: str):
-    return db.query(User).filter(User.username == username).first()
+    return db.query(User).filter(User.username == username).first()#none
 
 
-def create(db: Session, username: str, hashed_password: str, role: str, email: str):
-    user = User(username=username, hashed_password=hashed_password, role=role, email=email)
+def create(db: Session, data: dict):
+    user = User(
+        username=data.get("username", data.get("name")),
+        password=data.get("password"),
+        role=data.get("role", "user"),
+        phone_number=data.get("phone_number"),
+        is_active=data.get("is_active", True),
+    )
     db.add(user)
     db.commit()
     db.refresh(user)

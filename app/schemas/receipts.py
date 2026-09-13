@@ -1,45 +1,30 @@
 from datetime import datetime
-from decimal import Decimal
+from typing import Optional
 
-from schemas.receipts import ReceiptBase
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict
 
 
 class ReceiptBase(BaseModel):
-   name:str
-   sku:str
-   price:Decimal
-   category:str
-   suplier_id:int
-   is_active:bool = True
+    sale_id: int
+    receipt_number: str
 
 
-   class ReceiptCreate(BaseModel):
-      pass
+class ReceiptCreate(ReceiptBase):
+    pass
 
 
-
-   class ReceiptUpdate(BaseModel):
-      name:str | None = None
-      sku:str | None = None
-      price:Decimal | None = None
-      category:str | None = None
-      suplier_id:int | None = None
-      is_active:bool | None = True
+class ReceiptUpdate(BaseModel):
+    sale_id: Optional[int] = None
+    receipt_number: Optional[str] = None
 
 
 class ReceiptRead(ReceiptBase):
-   model_config=ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)
 
-   id:int
-   created_at:datetime
-   updated_at:datetime
-   
-   
-class ReceiptDelete(ReceiptBase):
-    model_config=ConfigDict(from_attributes=True)
-    
-    id:int
-    created_at:datetime
-    updated_at:datetime 
-    
+    receipt_id: int
+    issue_date: datetime
+
+
+class ReceiptDelete(BaseModel):
+    receipt_id: int
+    model_config = ConfigDict(from_attributes=True)

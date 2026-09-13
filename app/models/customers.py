@@ -11,5 +11,6 @@ class Customer(Base):
     phone = Column(String, nullable=False)
     email = Column(String, nullable=False)
     address = Column(String, nullable=False)
+    points_balance = Column(Integer, default=0)
 
     sales = relationship("Sale", back_populates="customer")

@@ -8,6 +8,7 @@ class CustomerBase(BaseModel):
     last_name: str
     email: EmailStr
     phone: str
+    address: str
 
 
 class CustomerCreate(CustomerBase):
@@ -19,11 +20,12 @@ class CustomerUpdate(BaseModel):
     last_name: Optional[str] = None
     email: Optional[EmailStr] = None
     phone: Optional[str] = None
+    address: Optional[str] = None
     points_balance: Optional[int] = None
 
 
 class CustomerRead(CustomerBase):
     model_config = ConfigDict(from_attributes=True)
 
-    id: int
+    customer_id: int
     points_balance: int
